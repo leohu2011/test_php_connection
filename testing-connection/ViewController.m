@@ -59,14 +59,19 @@
     NSMutableDictionary *parametersDic = [NSMutableDictionary dictionary];
     //往字典里面添加需要提交的参数
     
-    [parametersDic setObject:@"testing" forKey:@"name"];
-    [parametersDic setObject:@"000000" forKey:@"pwd"];
+    NSString *user = username.text;
+    NSString *password = pwd.text;
+    
+    [parametersDic setObject:user forKey:@"user"];
+    [parametersDic setObject:password forKey:@"pwd"];
     
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    //these serializers have both the normal type and the json type. determine which one to use
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    //do not user the requestSerializer here for the intended string is not a json string. user this if we are sending over an nsdata->json string
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
     
     //以post的形式提交，POST的参数就是上面的域名，parameters的参数是一个字典类型，将上面的字典作为它的参数
     [manager POST:domainStr parameters:parametersDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -96,17 +101,16 @@
 //    [connect start];
     
     
-//    NSURL *url = [NSURL URLWithString:@"http://10.209.68.42/1.php"];
+//    NSURL *url = [NSURL URLWithString:@"http://127.0.0.1/1.php"];
 //    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 //    request.HTTPMethod = @"POST";
 //    NSString *str = [NSString stringWithFormat:@"user=%@&pwd=%@", username.text, pwd.text];
-//    
 //    request.HTTPBody = [str dataUsingEncoding:NSUTF8StringEncoding];
 //    
 //    NSURLSession *session = [NSURLSession sharedSession];
 //    // 由于要先对request先行处理,我们通过request初始化task3
 //    NSURLSessionTask *task = [session dataTaskWithRequest:request
-//                                       completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) { NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil]); }];
+//                                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) { NSLog(@"%@", [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil]); }];
 //    [task resume];
 }
 
